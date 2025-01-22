@@ -13,6 +13,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Runtime artifacts
+.webui_secret_key
+backend/open_webui_data.zip
+
 # C extensions
 *.so
 
@@ -136,7 +140,7 @@ celerybeat.pid
 .env
 .venv
 env/
-venv/
+venv*/
 ENV/
 env.bak/
 venv.bak/
