@@ -1,0 +1,40 @@
+services:
+  litellm:
+    container_name: litellm 
+    network_mode: host
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
+    tty: true
+    volumes:
+      - ./litellm-config:/litellm-config
+    environment:
+      - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    ports: 
+      - 4000:4000
+    entrypoint: "bash -c 'which litellm || pip install litellm[proxy]; litellm --port 4000 --config /litellm-config/litellm-config.yaml'"
+    restart: unless-stopped
+
+  open-webui:
+    network_mode: host
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG-main}
+    container_name: open-webui
+    volumes:
+      - ./backend/open_webui/data:/app/backend/data
+    depends_on:
+      - litellm
+    ports:
+      - ${OPEN_WEBUI_PORT-3000}:8080
+    environment:
+      - OPENAI_API_BASE_URL=http://0.0.0.0:4000  # hit LiteLLM for everything, prefixes openai/*, anthropic/*, perplexity/* and ollama/*.
+      - OPENAI_API_KEY=none
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+
