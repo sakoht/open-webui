@@ -1,9 +1,4 @@
 model_list:
-  - model_name: ollama/*
-    litellm_params:
-      model: ollama/*
-      api_base: http://localhost:11434
- 
   - model_name: perplexity/*
     litellm_params:
       model: perplexity/*
@@ -18,5 +13,8 @@ model_list:
     litellm_params:
       model: openai/*
       api_key: os.environ/OPENAI_API_KEY
-  
-
+ 
+  - model_name: ollama_chat/deepseek-r1:14b
+    litellm_params:
+      model: ollama_chat/deepseek-r1:14b
+      api_base: "http://localhost:11434"
