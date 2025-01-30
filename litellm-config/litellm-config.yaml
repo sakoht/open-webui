@@ -14,7 +14,9 @@ model_list:
       model: openai/*
       api_key: os.environ/OPENAI_API_KEY
  
-  - model_name: ollama_chat/deepseek-r1:14b
+  - model_name: ollama/*
     litellm_params:
-      model: ollama_chat/deepseek-r1:14b
+      model: ollama/*
       api_base: "http://localhost:11434"
+
+
